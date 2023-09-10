@@ -1,8 +1,10 @@
+
+
 {% extends 'base.html' %}
 
 {% block content %}
 
-<body style="background-color: cyan;">
+<li>
 
 {% if user.is_authenticated %}
 
@@ -24,7 +26,7 @@
   <tbody>
     
 {% if records %}
-	{% for record in records %}
+	{% for record in customers %}
 		<tr>
 			<td>{{ record.first_name }} {{ record.last_name }}</td>
 			<td>{{ record.email }}</td>
@@ -45,12 +47,48 @@
 	</table>
 
 
+  <br/><br/>
+
+ <!-- {{ customers }} <br/>
+  Has Previous:{{ customers.has_previous }} <br/>
+  Has Next:{{ customers.has_next }} <br/>
+  Current Page:{{ customers.number }} <br/>
+  Number of Pages:{{ customers.paginator.num_pages }} <br/>
+  <hr><br/><br/>  -->
 
 
 
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+     
+ 
+
+
+
+
+  {% if customers.has_previous %}
+       <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+       <li class="page-item"><a class="page-link" href="?page={{ customers.previous_page_number}}">Previous</a></li>
+
+  {% endif %}
+
+  <!--<li class="page-item disabled"><a href="#" class ="page-link" >page{{ customers.number}} of {{ customers.paginator.num_pages}} </a></li> -->
+  {% for i in nums %}
+       <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter}}</a></li>
+  {% endfor %}
+{% if customers.has_next %}
+       <li class="page-item"><a class="page-link" href="?page={{ customers.next_page_number }}">Next</a></li>
+       <li class="page-item"><a class="page-link" href="?page={{ customers.paginator.num_pages}}">Last &raquo</a></li>
+
+
+{% endif %}
+</ul>
+</nav>
+<br/>
 {% else %}
 
 <body class="col-md-6 offset-md-3">
+  
 <h1>Login</h1>
 <br/>
 
@@ -72,5 +110,6 @@
 </body>
 
 {% endif %}
+
 
 {% endblock %}

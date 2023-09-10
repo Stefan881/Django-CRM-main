@@ -4,9 +4,18 @@ from django.contrib import messages
 from .forms import SignUpForm, AddRecordForm
 from .models import Record
 
+#Import pagination stuff 
+from django.core.paginator import Paginator 
 
 def home(request):
+	#records = Record.objects.all().order_by('?')
 	records = Record.objects.all()
+
+	#set up pagination 
+	p = Paginator(Record.objects.all(),4)
+	page = request.GET.get('page')
+	customers = p.get_page(page)
+	nums = "a" * customers.paginator.num_pages
 	# Check to see if logging in
 	if request.method == 'POST':
 		username = request.POST['username']
@@ -21,7 +30,10 @@ def home(request):
 			messages.success(request, "There Was An Error Logging In, Please Try Again...")
 			return redirect('home')
 	else:
-		return render(request, 'home.html', {'records':records})
+		return render(request, 'home.html', {'records':records,'customers':customers,'nums':nums})	
+	
+
+	
 
 
 
